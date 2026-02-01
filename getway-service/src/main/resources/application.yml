@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id : etudiant-service
+              uri : lb://ETUDIANT-SERVICE
+              predicates:
+                - Path=/etudiant/**
+            - id : enrollement-service
+              uri : lb://INSCRIPTION-SERVICE
+              predicates:
+                - Path=/enrollement/**
+
+

@@ -1,0 +1,131 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< pfe.example:enrollement_service >-------------------
+[INFO] Building enrollement_module 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The POM for org.springframework.boot:spring-boot-starter-webmvc:jar:3.1.5 is missing, no dependency information available
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/hibernate/orm/hibernate-core/6.2.13.Final/hibernate-core-6.2.13.Final.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/hibernate/orm/hibernate-core/6.2.13.Final/hibernate-core-6.2.13.Final.jar (11 MB at 145 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-jpa/3.1.5/spring-data-jpa-3.1.5.jar
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-commons/3.1.5/spring-data-commons-3.1.5.jar
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/spring-context/6.0.13/spring-context-6.0.13.jar
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk18on/1.73/bcpkix-jdk18on-1.73.jar
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-rsa/1.0.12.RELEASE/spring-security-rsa-1.0.12.RELEASE.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-rsa/1.0.12.RELEASE/spring-security-rsa-1.0.12.RELEASE.jar (20 kB at 19 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk18on/1.73/bcprov-jdk18on-1.73.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-jpa/3.1.5/spring-data-jpa-3.1.5.jar (1.1 MB at 257 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/bouncycastle/bcutil-jdk18on/1.73/bcutil-jdk18on-1.73.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/data/spring-data-commons/3.1.5/spring-data-commons-3.1.5.jar (1.4 MB at 169 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-config-client/4.0.4/spring-cloud-config-client-4.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-config-client/4.0.4/spring-cloud-config-client-4.0.4.jar (86 kB at 9.7 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/client5/httpclient5/5.2.1/httpclient5-5.2.1.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/client5/httpclient5/5.2.1/httpclient5-5.2.1.jar (840 kB at 67 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/core5/httpcore5/5.2.3/httpcore5-5.2.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/bouncycastle/bcutil-jdk18on/1.73/bcutil-jdk18on-1.73.jar (675 kB at 48 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/core5/httpcore5-h2/5.2.3/httpcore5-h2-5.2.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/core5/httpcore5/5.2.3/httpcore5-5.2.3.jar (855 kB at 57 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-netflix-eureka-client/4.0.3/spring-cloud-starter-netflix-eureka-client-4.0.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-netflix-eureka-client/4.0.3/spring-cloud-starter-netflix-eureka-client-4.0.3.jar (2.9 kB at 188 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-netflix-eureka-client/4.0.3/spring-cloud-netflix-eureka-client-4.0.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/httpcomponents/core5/httpcore5-h2/5.2.3/httpcore5-h2-5.2.3.jar (237 kB at 15 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/netflix/eureka/eureka-client/2.0.1/eureka-client-2.0.1.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-netflix-eureka-client/4.0.3/spring-cloud-netflix-eureka-client-4.0.3.jar (136 kB at 8.5 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.19/xstream-1.4.19.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/netflix/eureka/eureka-client/2.0.1/eureka-client-2.0.1.jar (404 kB at 22 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/google/guava/guava/19.0/guava-19.0.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/thoughtworks/xstream/xstream/1.4.19/xstream-1.4.19.jar (633 kB at 35 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.15/commons-codec-1.15.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/bouncycastle/bcpkix-jdk18on/1.73/bcpkix-jdk18on-1.73.jar (1.0 MB at 57 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/netflix/eureka/eureka-core/2.0.1/eureka-core-2.0.1.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/commons-codec/commons-codec/1.15/commons-codec-1.15.jar (354 kB at 17 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/jakarta/servlet/jakarta.servlet-api/6.0.0/jakarta.servlet-api-6.0.0.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/spring-context/6.0.13/spring-context-6.0.13.jar (1.2 MB at 55 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/fasterxml/woodstox/woodstox-core/6.2.1/woodstox-core-6.2.1.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/netflix/eureka/eureka-core/2.0.1/eureka-core-2.0.1.jar (241 kB at 11 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/woodstox/stax2-api/4.2.1/stax2-api-4.2.1.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/woodstox/stax2-api/4.2.1/stax2-api-4.2.1.jar (196 kB at 7.8 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-loadbalancer/4.0.4/spring-cloud-starter-loadbalancer-4.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-loadbalancer/4.0.4/spring-cloud-starter-loadbalancer-4.0.4.jar (2.6 kB at 102 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-loadbalancer/4.0.4/spring-cloud-loadbalancer-4.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-loadbalancer/4.0.4/spring-cloud-loadbalancer-4.0.4.jar (135 kB at 4.9 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/io/projectreactor/reactor-core/3.5.11/reactor-core-3.5.11.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/jakarta/servlet/jakarta.servlet-api/6.0.0/jakarta.servlet-api-6.0.0.jar (348 kB at 12 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/io/projectreactor/addons/reactor-extra/3.5.1/reactor-extra-3.5.1.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/io/projectreactor/addons/reactor-extra/3.5.1/reactor-extra-3.5.1.jar (104 kB at 3.6 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-cache/3.1.5/spring-boot-starter-cache-3.1.5.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/google/guava/guava/19.0/guava-19.0.jar (2.3 MB at 80 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/spring-context-support/6.0.13/spring-context-support-6.0.13.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-cache/3.1.5/spring-boot-starter-cache-3.1.5.jar (4.8 kB at 164 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-openfeign/4.0.4/spring-cloud-starter-openfeign-4.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-openfeign/4.0.4/spring-cloud-starter-openfeign-4.0.4.jar (2.6 kB at 89 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/spring-web/6.0.13/spring-web-6.0.13.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/spring-context-support/6.0.13/spring-context-support-6.0.13.jar (170 kB at 5.8 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-crypto/6.1.5/spring-security-crypto-6.1.5.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/security/spring-security-crypto/6.1.5/spring-security-crypto-6.1.5.jar (84 kB at 2.7 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-circuitbreaker-resilience4j/3.0.3/spring-cloud-starter-circuitbreaker-resilience4j-3.0.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-starter-circuitbreaker-resilience4j/3.0.3/spring-cloud-starter-circuitbreaker-resilience4j-3.0.3.jar (2.9 kB at 92 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/sun/xml/bind/jaxb-impl/4.0.3/jaxb-impl-4.0.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/sun/xml/bind/jaxb-impl/4.0.3/jaxb-impl-4.0.3.jar (923 kB at 26 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jakarta/rs/jackson-jakarta-rs-json-provider/2.15.3/jackson-jakarta-rs-json-provider-2.15.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jakarta/rs/jackson-jakarta-rs-json-provider/2.15.3/jackson-jakarta-rs-json-provider-2.15.3.jar (17 kB at 485 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jakarta/rs/jackson-jakarta-rs-base/2.15.3/jackson-jakarta-rs-base-2.15.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/jakarta/rs/jackson-jakarta-rs-base/2.15.3/jackson-jakarta-rs-base-2.15.3.jar (32 kB at 875 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.15.3/jackson-datatype-jdk8-2.15.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.15.3/jackson-datatype-jdk8-2.15.3.jar (36 kB at 962 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names/2.15.3/jackson-module-parameter-names-2.15.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/fasterxml/woodstox/woodstox-core/6.2.1/woodstox-core-6.2.1.jar (1.6 MB at 41 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/tomcat/embed/tomcat-embed-core/10.1.15/tomcat-embed-core-10.1.15.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names/2.15.3/jackson-module-parameter-names-2.15.3.jar (10 kB at 267 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.15/tomcat-embed-websocket-10.1.15.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/tomcat/embed/tomcat-embed-websocket/10.1.15/tomcat-embed-websocket-10.1.15.jar (278 kB at 6.7 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/spring-web/6.0.13/spring-web-6.0.13.jar (1.8 MB at 39 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/containers/jersey-container-servlet-core/3.1.3/jersey-container-servlet-core-3.1.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/containers/jersey-container-servlet-core/3.1.3/jersey-container-servlet-core-3.1.3.jar (75 kB at 1.6 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/core/jersey-common/3.1.3/jersey-common-3.1.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/hibernate/validator/hibernate-validator/8.0.1.Final/hibernate-validator-8.0.1.Final.jar (1.3 MB at 28 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/containers/jersey-container-servlet/3.1.3/jersey-container-servlet-3.1.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/containers/jersey-container-servlet/3.1.3/jersey-container-servlet-3.1.3.jar (33 kB at 688 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/core/jersey-client/3.1.3/jersey-client-3.1.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/core/jersey-client/3.1.3/jersey-client-3.1.3.jar (306 kB at 6.2 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/ext/jersey-bean-validation/3.1.3/jersey-bean-validation-3.1.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/ext/jersey-bean-validation/3.1.3/jersey-bean-validation-3.1.3.jar (60 kB at 1.2 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-locator/3.0.4/hk2-locator-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/io/projectreactor/reactor-core/3.5.11/reactor-core-3.5.11.jar (1.8 MB at 35 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/external/aopalliance-repackaged/3.0.4/aopalliance-repackaged-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-locator/3.0.4/hk2-locator-3.0.4.jar (205 kB at 3.9 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2/3.0.4/hk2-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/external/aopalliance-repackaged/3.0.4/aopalliance-repackaged-3.0.4.jar (27 kB at 522 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-utils/3.0.4/hk2-utils-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-utils/3.0.4/hk2-utils-3.0.4.jar (132 kB at 2.4 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-api/3.0.4/hk2-api-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2/3.0.4/hk2-3.0.4.jar (15 kB at 277 B/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-core/3.0.4/hk2-core-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-api/3.0.4/hk2-api-3.0.4.jar (207 kB at 3.6 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-runlevel/3.0.4/hk2-runlevel-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/core/jersey-common/3.1.3/jersey-common-3.1.3.jar (1.2 MB at 21 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/class-model/3.0.4/class-model-3.0.4.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-core/3.0.4/hk2-core-3.0.4.jar (133 kB at 2.3 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/ext/jersey-entity-filtering/3.1.3/jersey-entity-filtering-3.1.3.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/hk2-runlevel/3.0.4/hk2-runlevel-3.0.4.jar (69 kB at 1.2 kB/s)
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/jersey/ext/jersey-entity-filtering/3.1.3/jersey-entity-filtering-3.1.3.jar (85 kB at 1.5 kB/s)
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/glassfish/hk2/class-model/3.0.4/class-model-3.0.4.jar (115 kB at 2.0 kB/s)
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/tomcat/embed/tomcat-embed-core/10.1.15/tomcat-embed-core-10.1.15.jar (3.5 MB at 51 kB/s)
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/bouncycastle/bcprov-jdk18on/1.73/bcprov-jdk18on-1.73.jar (11 MB at 135 kB/s)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:42 min
+[INFO] Finished at: 2026-01-29T23:05:33+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal on project enrollement_service: Could not resolve dependencies for project pfe.example:enrollement_service:jar:0.0.1-SNAPSHOT
+[ERROR] dependency: org.springframework.boot:spring-boot-starter-webmvc:jar:3.1.5 (compile)
+[ERROR] 	org.springframework.boot:spring-boot-starter-webmvc:jar:3.1.5 was not found in https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of central has elapsed or updates are forced
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
