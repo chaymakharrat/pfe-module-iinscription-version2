@@ -7,8 +7,10 @@ public enum StatutDemandeInscription {
     EN_COURS_DEPARTEMENT,
     REJETE_DEPARTEMENT,
     EN_ATTENTE_PAIEMENT,
-    IMPAYE,
-    PARTIEL,
-    PAYE,
+//    IMPAYE,
+//    PARTIEL,
+//    PAYE,
+    PAYMENT_VALID,
+    REJETE_FINANCE,
     INSCRIT
 }

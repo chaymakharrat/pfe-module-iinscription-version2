@@ -17,6 +17,8 @@
         <option value="$PROJECT_DIR$/test_cumanda/pom.xml" />
         <option value="$PROJECT_DIR$/enrollement_service/pom.xml" />
         <option value="$PROJECT_DIR$/autehntification_service/pom.xml" />
+        <option value="$PROJECT_DIR$/departement-service/pom.xml" />
+        <option value="$PROJECT_DIR$/authentification_service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

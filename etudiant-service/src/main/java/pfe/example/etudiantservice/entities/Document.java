@@ -40,6 +40,6 @@ public class Document {
     private String commentaireValidation;  // Si rejeté, pourquoi ?
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "candidat_id", nullable = false)
-    private Etudiant etduant;
+    @JoinColumn(name = "etudiant_id", nullable = false)
+    private Etudiant etudiant;
 }

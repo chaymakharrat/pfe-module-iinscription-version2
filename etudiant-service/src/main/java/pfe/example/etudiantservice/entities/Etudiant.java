@@ -1,9 +1,11 @@
 package pfe.example.etudiantservice.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import pfe.example.etudiantservice.enumerateur.Diplome;
 import pfe.example.etudiantservice.enumerateur.Genre;
+import pfe.example.etudiantservice.enumerateur.StatutEtudiant;
 import pfe.example.etudiantservice.enumerateur.TypeDocument;
 
 import java.time.LocalDate;
@@ -23,74 +25,62 @@ public class Etudiant {
     private Long id;
     @Column(nullable = false, unique = true)
     private String matricule;  // Ex: ITECH-2024-001
+    @Column(nullable = false)
+    @NotBlank(message = "Le nom est obligatoire")
     private String nom;
     @Column(nullable = false)
+    @NotBlank(message = "Le prénom est obligatoire")
     private String prenom;
     @Column(nullable = false, unique = true)
+    @NotBlank(message = "L'email est obligatoire")
+    @Email(message = "L'email doit être valide")
     private String email;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Pays pays;
     @Column(nullable = false)
     private String phone;
-
-    @Column(nullable = false)
-    private LocalDate dateNaissance;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @NotNull(message = "Le genre est obligatoire")
     private Genre genre;
+    // 🔗 LIEN AVEC AUTH-SERVICE (IMPORTANT)
+    @Column(name = "user_id", unique = true, nullable = false)
+    private String userId;  // ID de l'utilisateur dans Auth-Service
 
     @Enumerated(EnumType.STRING)
     private Diplome dernierDiplome; // LICENCE, BACCALAUREA, MASTERE, INGENIEUR
 
     private int anneeDernierDiplome;  // Ex: 2023
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diplome_souhaite_id", nullable = false)
-    private DiplomeFaculté diplomeSouhaite; //licence/master
+    @Column(nullable = false)
+    private LocalDate dateNaissance;
 
-    //Ajout de la relation avec les documents
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Pays pays;
+    @Column(nullable = false)
+    private LocalDateTime dateInscription;
     @OneToMany(
-            mappedBy = "candidat",
+            mappedBy = "etudiant",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
     private List<Document> documents = new ArrayList<>();
-    //////
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private LocalDateTime dateCreation=LocalDateTime.now();
-    ////////
-    @Column
-    private LocalDateTime dateValidationScolarite;
+    private StatutEtudiant statut=StatutEtudiant.CANDIDAT;
 
-    @Column
-    private LocalDateTime dateValidationDepartement;
 
-    @Column
-    private LocalDateTime dateAcceptation;  // Quand devient étudiant
 
-    @Column
-    private String validatedByScolarite;  // userId
 
-    @Column
-    private String validatedByDepartement;  // userId
-
-    @Column
-    private String rejectionReason;
-    @Column(nullable = false)
-    private LocalDateTime dateInscription;
 
     // Méthodes utilitaires
     public void addDocument(Document document) {
         documents.add(document);
-        document.setEtduant(this);
+        document.setEtudiant(this);
     }
 
     public void removeDocument(Document document) {
         documents.remove(document);
-        document.setEtduant(null);
+        document.setEtudiant(null);
     }
 
     // Vérifier si tous les documents obligatoires sont présents

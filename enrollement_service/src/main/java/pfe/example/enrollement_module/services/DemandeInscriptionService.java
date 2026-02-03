@@ -16,15 +16,6 @@ public class DemandeInscriptionService {
 
         // Création d'une nouvelle demande d'inscription
         DemandeInscription demande = new DemandeInscription();
-        demande.setNom(request.getNom());
-        demande.setPrenom(request.getPrenom());
-        demande.setEmail(request.getEmail());
-        demande.setPhone(request.getPhone());
-        demande.setDateNaissance(request.getDateNaissance());
-        demande.setGenre(request.getGenre());
-        demande.setDernierDiplome(request.getDernierDiplome());
-        demande.setAnneeDernierDiplome(request.getAnneeDernierDiplome());
-
         // Statut initial
         demande.setStatut(StatutDemandeInscription.SOUMIS);
 
