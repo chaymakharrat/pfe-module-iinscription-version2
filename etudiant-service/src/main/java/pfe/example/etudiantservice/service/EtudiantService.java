@@ -2,7 +2,6 @@ package pfe.example.etudiantservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pfe.example.etudiantservice.client.DemandeInscriptionRestClient;
 import pfe.example.etudiantservice.entities.Etudiant;
 import pfe.example.etudiantservice.model.DemandeInscription;
 import pfe.example.etudiantservice.repositories.EtudiantRepository;
@@ -16,7 +15,6 @@ import java.util.UUID;
 public class EtudiantService {
 
     private final EtudiantRepository etudiantRepository;
-    private final DemandeInscriptionRestClient clientDemandeInscription;
 
     public Etudiant inscrireEtudiant(Long candidatId) {
 
@@ -24,22 +22,11 @@ public class EtudiantService {
         if (etudiantRepository.existsByCandidatId(candidatId)) {
             throw new RuntimeException("Cet étudiant est déjà inscrit");
         }
-
-        // 2️⃣ Récupérer la demande via Feign
-        DemandeInscription demande =
-                clientDemandeInscription.getDemandeById(candidatId);
-
         // 3️⃣ Créer l'étudiant
         Etudiant etudiant = new Etudiant();
-        etudiant.setCandidatId(demande.getId());
         etudiant.setDateInscription(LocalDateTime.now());
         etudiant.setMatricule(generateMatricule());
-
         Etudiant saved = etudiantRepository.save(etudiant);
-
-        // 4️⃣ Mettre à jour le statut côté enrollment
-        clientDemandeInscription.accepterDemande(candidatId);
-
         return saved;
     }
 

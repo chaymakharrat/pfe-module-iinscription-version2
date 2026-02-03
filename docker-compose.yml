@@ -1,0 +1,148 @@
+version: '3.8'
+
+services:
+  # ========================================
+  # BASE DE DONNÉES MYSQL
+  # ========================================
+  mysql-scolarite:
+    image: mysql:8.0
+    container_name: mysql-scolarite
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: scolarite_service
+    ports:
+      - "3307:3306"  # Éviter le conflit avec MySQL local sur 3306
+    volumes:
+      - mysql-scolarite-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - inscription-network
+
+  # ========================================
+  # DISCOVERY SERVICE (Eureka)
+  # ========================================
+  enset-inscription-discovery-service:
+    build: ./dicovery-service
+    container_name: my-inscription-discovery-service
+    ports:
+      - "8761:8761"
+    expose:
+      - "8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+      start_period: 40s
+    networks:
+      - inscription-network
+
+  # ========================================
+  # CONFIG SERVICE
+  # ========================================
+  enset-inscription-config-service:
+    build: ./config-service
+    container_name: my-inscription-config-service
+    ports:
+      - "9999:9999"
+    expose:
+      - "9999"
+    environment:
+      - DISCOVERY_SERVICE_URL=http://my-inscription-discovery-service:8761/eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9999/actuator/health"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+      start_period: 40s
+    depends_on:
+      enset-inscription-discovery-service:
+        condition: service_healthy
+    networks:
+      - inscription-network
+
+  # ========================================
+  # Etudiant SERVICE
+  # ========================================
+  enset-inscription-etudiant-service:
+    build: ./etudiant_service
+    container_name: my-inscription-etudiant-service
+    ports:
+      - "8089:8089"
+    expose:
+      - "8089"
+    environment:
+      # Eureka et Config
+      - DISCOVERY_SERVICE_URL=http://enset-inscription-discovery-service:8761/eureka
+      - CONFIG_SERVICE_URL=http://enset-inscription-config-service:9999
+
+      # Base de données MySQL
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-etudiant:3306/etudiant_service?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8090/actuator/health" ]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+      start_period: 50s
+    depends_on:
+      mysql-scolarite:
+        condition: service_healthy
+      enset-inscription-config-service:
+        condition: service_healthy
+    networks:
+      - inscription-network
+  # ========================================
+  # ENROLLMENT SERVICE
+  # ========================================
+  enset-inscription-enrollement-service:
+    build: ./enrollement_service
+    container_name: my-inscription-enrollement-service
+    ports:
+      - "8090:8090"
+    expose:
+      - "8090"
+    environment:
+      # Eureka et Config
+      - DISCOVERY_SERVICE_URL=http://enset-inscription-discovery-service:8761/eureka
+      - CONFIG_SERVICE_URL=http://enset-inscription-config-service:9999
+      
+      # Base de données MySQL
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-scolarite:3306/scolarite_service?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root123
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/actuator/health"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+      start_period: 50s
+    depends_on:
+      mysql-scolarite:
+        condition: service_healthy
+      enset-inscription-config-service:
+        condition: service_healthy
+    networks:
+      - inscription-network
+
+# ========================================
+# NETWORKS
+# ========================================
+networks:
+  inscription-network:
+    driver: bridge
+
+# ========================================
+# VOLUMES
+# ========================================
+volumes:
+  mysql-scolarite-data:
+    driver: local
