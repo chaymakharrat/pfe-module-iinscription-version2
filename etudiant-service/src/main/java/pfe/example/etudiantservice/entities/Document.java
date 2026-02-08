@@ -1,13 +1,13 @@
 package pfe.example.etudiantservice.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pfe.example.etudiantservice.enumerateur.TypeDocument;
-
 
 @Entity
 @Data
@@ -40,6 +40,7 @@ public class Document {
     private String commentaireValidation;  // Si rejeté, pourquoi ?
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "etudiant_id", nullable = false)
     private Etudiant etudiant;
 }

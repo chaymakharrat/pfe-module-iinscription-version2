@@ -41,5 +41,7 @@ public class EtudiantRequestDTO {
     @Past(message = "La date de naissance doit être dans le passé")
     private LocalDate dateNaissance;
 
+    private String numCarteIdentite;
+    private String numPassport;
     private Long paysId;
 }

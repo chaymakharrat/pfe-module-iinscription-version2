@@ -5,18 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import pfe.example.etudiantservice.dto.EtudiantDTO;
-import pfe.example.etudiantservice.entities.Document;
 import pfe.example.etudiantservice.entities.Etudiant;
-
 import pfe.example.etudiantservice.mapper.EtudiantMapper;
-
 import jakarta.validation.Valid;
 import pfe.example.etudiantservice.mapper.EtudiantRequestDTO;
 import pfe.example.etudiantservice.service.EtudiantService;
-import pfe.example.etudiantservice.service.JwtTokenProvider;
-
+import pfe.example.etudiantservice.service.PaysService;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,12 +19,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/etudiants")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class EtudiantController {
 
     private final EtudiantService etudiantService;
     private final EtudiantMapper etudiantMapper;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final PaysService paysService;
 
     /**
      * Créer un nouvel étudiant
@@ -43,39 +38,6 @@ public class EtudiantController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(etudiantMapper.toDTO(savedEtudiant));
-    }
-
-    /**
-     * Récupérer un étudiant par ID
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<EtudiantDTO> getEtudiantById(@PathVariable Long id) {
-        log.info("GET /api/etudiants/{} - Fetching student", id);
-
-        Etudiant etudiant = etudiantService.getEtudiantById(id);
-        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
-    }
-
-    /**
-     * Récupérer un étudiant par matricule
-     */
-    @GetMapping("/matricule/{matricule}")
-    public ResponseEntity<EtudiantDTO> getEtudiantByMatricule(@PathVariable String matricule) {
-        log.info("GET /api/etudiants/matricule/{} - Fetching student", matricule);
-
-        Etudiant etudiant = etudiantService.getEtudiantByMatricule(matricule);
-        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
-    }
-
-    /**
-     * Récupérer un étudiant par email
-     */
-    @GetMapping("/email/{email}")
-    public ResponseEntity<EtudiantDTO> getEtudiantByEmail(@PathVariable String email) {
-        log.info("GET /api/etudiants/email/{} - Fetching student", email);
-
-        Etudiant etudiant = etudiantService.getEtudiantByEmail(email);
-        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
     }
 
     /**
@@ -93,6 +55,34 @@ public class EtudiantController {
         return ResponseEntity.ok(dtos);
     }
 
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EtudiantDTO> updateEtudiant(
+            @PathVariable Long id) {
+        Etudiant updatedEtudiant = etudiantService.updateEtudiant(id);
+        return ResponseEntity.ok(etudiantMapper.toDTO(updatedEtudiant));
+    }
+    /**
+     * Vérifier si tous les documents requis sont présents
+     */
+    @GetMapping("/{id}/documents/check")
+    public ResponseEntity<Boolean> checkRequiredDocuments(@PathVariable Long id) {
+        log.info("GET /api/etudiants/{}/documents/check", id);
+
+        boolean hasAll = etudiantService.hasAllRequiredDocuments(id);
+        return ResponseEntity.ok(hasAll);
+    }
+    /**
+     * Supprimer un étudiant
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEtudiant(@PathVariable Long id) {
+        log.info("DELETE /api/etudiants/{} - Deleting student", id);
+
+        etudiantService.deleteEtudiant(id);
+        return ResponseEntity.noContent().build();
+    }
     /**
      * Rechercher des étudiants
      */
@@ -122,52 +112,59 @@ public class EtudiantController {
 
         return ResponseEntity.ok(dtos);
     }
-
     /**
-     * Mettre à jour un étudiant
+     * Récupérer un étudiant par matricule
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<EtudiantDTO> updateEtudiant(
-            @PathVariable Long id,
-            @Valid @RequestBody EtudiantRequestDTO requestDTO) {
+    @GetMapping("/matricule/{matricule}")
+    public ResponseEntity<EtudiantDTO> getEtudiantByMatricule(@PathVariable String matricule) {
+        log.info("GET /api/etudiants/matricule/{} - Fetching student", matricule);
 
-        log.info("PUT /api/etudiants/{} - Updating student", id);
-
-        Etudiant etudiantDetails = etudiantMapper.toEntity(requestDTO);
-        Etudiant updatedEtudiant = etudiantService.updateEtudiant(id, etudiantDetails);
-
-        return ResponseEntity.ok(etudiantMapper.toDTO(updatedEtudiant));
+        Etudiant etudiant = etudiantService.getEtudiantByMatricule(matricule);
+        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
     }
 
     /**
-     * Supprimer un étudiant
+     * Récupérer un étudiant par email
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEtudiant(@PathVariable Long id) {
-        log.info("DELETE /api/etudiants/{} - Deleting student", id);
+    @GetMapping("/email/{email}")
+    public ResponseEntity<EtudiantDTO> getEtudiantByEmail(@PathVariable String email) {
+        log.info("GET /api/etudiants/email/{} - Fetching student", email);
 
-        etudiantService.deleteEtudiant(id);
-        return ResponseEntity.noContent().build();
+        Etudiant etudiant = etudiantService.getEtudiantByEmail(email);
+        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
     }
 
     /**
-     * Vérifier si tous les documents requis sont présents
+     * Récupérer un étudiant par ID
      */
-    @GetMapping("/{id}/documents/check")
-    public ResponseEntity<Boolean> checkRequiredDocuments(@PathVariable Long id) {
-        log.info("GET /api/etudiants/{}/documents/check", id);
+    @GetMapping("/{id}")
+    public ResponseEntity<EtudiantDTO> getEtudiantById(@PathVariable Long id) {
+        log.info("GET /api/etudiants/{} - Fetching student", id);
 
-        boolean hasAll = etudiantService.hasAllRequiredDocuments(id);
-        return ResponseEntity.ok(hasAll);
+        Etudiant etudiant = etudiantService.getEtudiantById(id);
+        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
     }
-    // 🎯 Récupère le profil de l'étudiant connecté
-    @GetMapping("/me")
-    public ResponseEntity<EtudiantDTO> getMyProfile(
-            @RequestHeader("Authorization") String token) {
-        // Extraire userId du JWT
-        String userId = jwtTokenProvider.getUserIdFromToken(token);
-        // Récupérer toutes les données de l'étudiant
-        EtudiantDTO dashboard = etudiantService.getStudentDashboard(userId);
-        return ResponseEntity.ok(dashboard);
+    /**
+     * Récupérer un étudiant par carte identité
+     */
+    @GetMapping("/numCarteIdentite/{numCarteIdentite}")
+    public ResponseEntity<EtudiantDTO> getEtudiantByNumCarteIdentite(@PathVariable String numCarteIdentite) {
+        log.info("GET /api/etudiants/numCarteIdentite/{} - Fetching student", numCarteIdentite);
+
+        Etudiant etudiant = etudiantService.getEtudiantByNumCarteIdentite(numCarteIdentite);
+        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
     }
+    /**
+     * Récupérer un étudiant par numero passport and pays
+     */
+    @GetMapping("/passportAndPays")
+    public ResponseEntity<EtudiantDTO> getEtudiantByPassport(
+            @RequestParam String numPassport,
+            @RequestParam Long paysId
+    ) {
+        log.info("Fetching student with passport number: {} for country id: {}", numPassport, paysId);
+        Etudiant etudiant = etudiantService.getEtudiantByNumPassportAndPays(numPassport, paysId);
+        return ResponseEntity.ok(etudiantMapper.toDTO(etudiant));
+    }
+
 }

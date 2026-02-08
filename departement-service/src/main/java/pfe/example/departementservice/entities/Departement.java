@@ -3,10 +3,11 @@ package pfe.example.departementservice.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@EqualsAndHashCode(of = {"nom"})
 @Entity
 @Data
 public class Departement {
@@ -16,13 +17,6 @@ public class Departement {
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Le nom est obligatoire")
     private String nom;
-    @Column(nullable = false, unique = true)
-    @NotBlank(message = "L'email est obligatoire")
-    private String email;
-    @Column(nullable = false)
-    @NotBlank(message = "Le téléphone est obligatoire")
-    private String phone;
     @OneToMany(mappedBy = "departement")
     private Set<DiplomeEtudier> diplomeEtudiers=new HashSet<>();
-
 }

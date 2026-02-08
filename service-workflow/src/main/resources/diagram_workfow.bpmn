@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0zay5bk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.43.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.24.0">
+  <bpmn:process id="enrollment-process" name="enrollment-process" isExecutable="true" camunda:historyTimeToLive="30">
+    <bpmn:startEvent id="StartEvent_1" name="Demande soumise">
+      <bpmn:outgoing>Flow_1rjyksb</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_19tpavb" name="Vérifier documents" camunda:class="com.example.workflow.delegate.VerifyDocumentDelegate">
+      <bpmn:incoming>Flow_1rjyksb</bpmn:incoming>
+      <bpmn:outgoing>Flow_0sqlawe</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1rjyksb" sourceRef="StartEvent_1" targetRef="Activity_19tpavb" />
+    <bpmn:sequenceFlow id="Flow_0sqlawe" sourceRef="Activity_19tpavb" targetRef="Task_ValidationScolarite" />
+    <bpmn:userTask id="Task_ValidationScolarite" name="Validation Scolarité">
+      <bpmn:extensionElements>
+        <camunda:taskListener delegateExpression="${validationScolariteDelegate}" event="complete" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0sqlawe</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oackrs</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Scolarite" name="Accepté?">
+      <bpmn:incoming>Flow_0oackrs</bpmn:incoming>
+      <bpmn:outgoing>Flow_0n49s4t</bpmn:outgoing>
+      <bpmn:outgoing>Flow_14yt231</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0oackrs" sourceRef="Task_ValidationScolarite" targetRef="Gateway_Scolarite" />
+    <bpmn:sequenceFlow id="Flow_0n49s4t" name="oui" sourceRef="Gateway_Scolarite" targetRef="Task_ValidationDepartement">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'ACCEPTE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Task_ValidationDepartement" name="Validation Département">
+      <bpmn:extensionElements>
+        <camunda:taskListener delegateExpression="${validationDepartementDelegate}" event="complete" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0n49s4t</bpmn:incoming>
+      <bpmn:outgoing>Flow_16zxf88</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_14yt231" name="non" sourceRef="Gateway_Scolarite" targetRef="Task_NotificationRejet">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'REJETE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Task_NotificationRejet" name="Notification rejet" camunda:class="com.example.workflow.delegate.NotificationRejetDelegate">
+      <bpmn:incoming>Flow_14yt231</bpmn:incoming>
+      <bpmn:incoming>Flow_020ar2p</bpmn:incoming>
+      <bpmn:outgoing>Flow_11q4ako</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_01ncpg8">
+      <bpmn:incoming>Flow_16zxf88</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wz4v7a</bpmn:outgoing>
+      <bpmn:outgoing>Flow_020ar2p</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_16zxf88" sourceRef="Task_ValidationDepartement" targetRef="Gateway_01ncpg8" />
+    <bpmn:sequenceFlow id="Flow_1wz4v7a" name="oui" sourceRef="Gateway_01ncpg8" targetRef="Activity_0jdhpdg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'ACCEPTE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_0jdhpdg" name="generer facture" camunda:class="com.example.workflow.delegate.GenerateInvoiceDelegate">
+      <bpmn:incoming>Flow_1wz4v7a</bpmn:incoming>
+      <bpmn:outgoing>Flow_171i81l</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_020ar2p" name="non" sourceRef="Gateway_01ncpg8" targetRef="Task_NotificationRejet">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'REJETE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_171i81l" sourceRef="Activity_0jdhpdg" targetRef="Task_ValidationPaiement" />
+    <bpmn:userTask id="Task_ValidationPaiement" name="Validation Paiement">
+      <bpmn:extensionElements>
+        <camunda:taskListener delegateExpression="${validationPaiementDelegate}" event="complete" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_171i81l</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hpenb2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0hpenb2" sourceRef="Task_ValidationPaiement" targetRef="Task_FinalizeEnrollment" />
+    <bpmn:serviceTask id="Task_FinalizeEnrollment" name="Finaliser inscription" camunda:class="com.example.workflow.delegate.FinalizeEnrollmentDelegate">
+      <bpmn:incoming>Flow_0hpenb2</bpmn:incoming>
+      <bpmn:outgoing>Flow_07uk4by</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Reject" name="Demande rejetée">
+      <bpmn:incoming>Flow_11q4ako</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_11q4ako" sourceRef="Task_NotificationRejet" targetRef="EndEvent_Reject" />
+    <bpmn:endEvent id="EndEvent_Success" name="Inscription finalisée">
+      <bpmn:incoming>Flow_07uk4by</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_07uk4by" sourceRef="Task_FinalizeEnrollment" targetRef="EndEvent_Success" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Task_VerifyDocument">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="162" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="176" y="205" width="48" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yjgg5w_di" bpmnElement="Activity_19tpavb">
+        <dc:Bounds x="310" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kqykjz_di" bpmnElement="Task_ValidationScolarite">
+        <dc:Bounds x="460" y="140" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1va6m9g_di" bpmnElement="Gateway_Scolarite" isMarkerVisible="true">
+        <dc:Bounds x="615" y="155" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="633" y="103" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0j2rir9_di" bpmnElement="Task_ValidationDepartement">
+        <dc:Bounds x="750" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cfdymq_di" bpmnElement="Task_NotificationRejet">
+        <dc:Bounds x="820" y="260" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1uriu6m_di" bpmnElement="Activity_0jdhpdg">
+        <dc:Bounds x="990" y="120" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1c3gx02_di" bpmnElement="Task_ValidationPaiement">
+        <dc:Bounds x="1160" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0q003ci_di" bpmnElement="Task_FinalizeEnrollment">
+        <dc:Bounds x="1330" y="120" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0z01ush_di" bpmnElement="EndEvent_Reject">
+        <dc:Bounds x="1002" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="978" y="325" width="85" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_110u4nu_di" bpmnElement="EndEvent_Success">
+        <dc:Bounds x="1502" y="142" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1495" y="185" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_01ncpg8_di" bpmnElement="Gateway_01ncpg8" isMarkerVisible="true">
+        <dc:Bounds x="895" y="135" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1rjyksb_di" bpmnElement="Flow_1rjyksb">
+        <di:waypoint x="218" y="180" />
+        <di:waypoint x="310" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sqlawe_di" bpmnElement="Flow_0sqlawe">
+        <di:waypoint x="410" y="180" />
+        <di:waypoint x="460" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oackrs_di" bpmnElement="Flow_0oackrs">
+        <di:waypoint x="560" y="180" />
+        <di:waypoint x="615" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0n49s4t_di" bpmnElement="Flow_0n49s4t">
+        <di:waypoint x="640" y="155" />
+        <di:waypoint x="640" y="120" />
+        <di:waypoint x="713" y="120" />
+        <di:waypoint x="713" y="160" />
+        <di:waypoint x="750" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="718" y="167" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14yt231_di" bpmnElement="Flow_14yt231">
+        <di:waypoint x="640" y="205" />
+        <di:waypoint x="640" y="300" />
+        <di:waypoint x="820" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="646" y="250" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16zxf88_di" bpmnElement="Flow_16zxf88">
+        <di:waypoint x="850" y="160" />
+        <di:waypoint x="895" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="865" y="142" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wz4v7a_di" bpmnElement="Flow_1wz4v7a">
+        <di:waypoint x="945" y="160" />
+        <di:waypoint x="990" y="160" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="960" y="142" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_020ar2p_di" bpmnElement="Flow_020ar2p">
+        <di:waypoint x="920" y="185" />
+        <di:waypoint x="920" y="223" />
+        <di:waypoint x="870" y="223" />
+        <di:waypoint x="870" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="886" y="205" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_171i81l_di" bpmnElement="Flow_171i81l">
+        <di:waypoint x="1090" y="160" />
+        <di:waypoint x="1160" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hpenb2_di" bpmnElement="Flow_0hpenb2">
+        <di:waypoint x="1260" y="160" />
+        <di:waypoint x="1330" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11q4ako_di" bpmnElement="Flow_11q4ako">
+        <di:waypoint x="920" y="300" />
+        <di:waypoint x="1002" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07uk4by_di" bpmnElement="Flow_07uk4by">
+        <di:waypoint x="1430" y="160" />
+        <di:waypoint x="1502" y="160" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

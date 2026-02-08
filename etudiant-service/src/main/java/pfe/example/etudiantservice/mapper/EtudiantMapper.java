@@ -24,6 +24,8 @@ public class EtudiantMapper {
                 .dernierDiplome(etudiant.getDernierDiplome())
                 .anneeDernierDiplome(etudiant.getAnneeDernierDiplome())
                 .dateNaissance(etudiant.getDateNaissance())
+                .numCarteIdentite(etudiant.getNumCarteIdentite())
+                .numPassport(etudiant.getNumPassport())
                 .paysNom(etudiant.getPays() != null ? etudiant.getPays().getNom() : null)
                 .dateInscription(etudiant.getDateInscription())
                 .hasAllRequiredDocuments(etudiant.hasAllRequiredDocuments())
@@ -44,6 +46,10 @@ public class EtudiantMapper {
         etudiant.setDernierDiplome(dto.getDernierDiplome());
         etudiant.setAnneeDernierDiplome(dto.getAnneeDernierDiplome());
         etudiant.setDateNaissance(dto.getDateNaissance());
+        etudiant.setNumCarteIdentite(dto.getNumCarteIdentite());
+        etudiant.setNumPassport(dto.getNumPassport());
+
+
 
         if (dto.getPaysId() != null) {
             Pays pays = new Pays();

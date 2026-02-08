@@ -12,7 +12,7 @@ public class Etudiant {
     private String nom;
     private String prenom;
     private String email;
-    private String pays;
+    private Long idPays;
     private String phone;
     private LocalDate dateNaissance;
     private String genre;

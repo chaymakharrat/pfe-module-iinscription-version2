@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pfe.example.etudiantservice.client.AuthServiceClient;
-import pfe.example.etudiantservice.dto.EtudiantDTO;
+import pfe.example.etudiantservice.dto.PaysDTO;
 import pfe.example.etudiantservice.entities.Etudiant;
 import pfe.example.etudiantservice.entities.Pays;
+import pfe.example.etudiantservice.enumerateur.StatutEtudiant;
 import pfe.example.etudiantservice.exception.ResourceNotFoundException;
+import pfe.example.etudiantservice.mapper.EtudiantMapper;
 import pfe.example.etudiantservice.repositories.EtudiantRepository;
 import pfe.example.etudiantservice.repositories.PaysRepository;
 
@@ -27,57 +28,27 @@ public class EtudiantService {
 
     private final EtudiantRepository etudiantRepository;
     private final PaysRepository paysRepository;
-    private final DocumentService documentStorageService;
-    private final AuthServiceClient authServiceClient;
 
     /**
      * Créer un nouvel étudiant
      */
     public Etudiant createEtudiant(Etudiant etudiant) {
-        log.info("Creating new student: {}", etudiant.getEmail());
+        log.info("Création d'un nouvel étudiant: {}", etudiant.getEmail());
 
-        // Vérifier si l'email existe déjà
         if (etudiantRepository.existsByEmail(etudiant.getEmail())) {
             throw new IllegalArgumentException("Un étudiant avec cet email existe déjà");
         }
 
-        // Générer le matricule
-        etudiant.setMatricule(generateMatricule());
-        etudiant.setDateInscription(LocalDateTime.now());
+        // Ne pas générer matricule ni dateInscription
+        etudiant.setMatricule(null);
+        etudiant.setDateInscription(null);
+        etudiant.setStatut(StatutEtudiant.CANDIDAT);
 
         Etudiant savedEtudiant = etudiantRepository.save(etudiant);
-        log.info("Student created successfully with matricule: {}", savedEtudiant.getMatricule());
+        log.info("Étudiant créé avec succès (statut CANDIDAT) : {}", savedEtudiant.getEmail());
 
         return savedEtudiant;
     }
-
-    /**
-     * Récupérer un étudiant par ID
-     */
-    public Etudiant getEtudiantById(Long id) {
-        log.info("Fetching student with id: {}", id);
-        return etudiantRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé avec l'ID: " + id));
-    }
-
-    /**
-     * Récupérer un étudiant par matricule
-     */
-    public Etudiant getEtudiantByMatricule(String matricule) {
-        log.info("Fetching student with matricule: {}", matricule);
-        return etudiantRepository.findByMatricule(matricule)
-                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé avec le matricule: " + matricule));
-    }
-
-    /**
-     * Récupérer un étudiant par email
-     */
-    public Etudiant getEtudiantByEmail(String email) {
-        log.info("Fetching student with email: {}", email);
-        return etudiantRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé avec l'email: " + email));
-    }
-
     /**
      * Récupérer tous les étudiants
      */
@@ -86,39 +57,19 @@ public class EtudiantService {
         return etudiantRepository.findAll();
     }
 
-    /**
-     * Mettre à jour un étudiant
-     */
-    public Etudiant updateEtudiant(Long id, Etudiant etudiantDetails) {
+    public Etudiant updateEtudiant(Long id) {
         log.info("Updating student with id: {}", id);
 
         Etudiant etudiant = getEtudiantById(id);
+        etudiant.setMatricule(generateMatricule());
+        etudiant.setDateInscription(LocalDateTime.now());
+        etudiant.setStatut(StatutEtudiant.INSCRIT);
 
-        // Mettre à jour les champs
-        etudiant.setNom(etudiantDetails.getNom());
-        etudiant.setPrenom(etudiantDetails.getPrenom());
-        etudiant.setEmail(etudiantDetails.getEmail());
-        etudiant.setPhone(etudiantDetails.getPhone());
-        etudiant.setGenre(etudiantDetails.getGenre());
-        etudiant.setDateNaissance(etudiantDetails.getDateNaissance());
-        etudiant.setDernierDiplome(etudiantDetails.getDernierDiplome());
-        etudiant.setAnneeDernierDiplome(etudiantDetails.getAnneeDernierDiplome());
-
-        if (etudiantDetails.getPays() != null) {
-            etudiant.setPays(etudiantDetails.getPays());
-        }
+        log.info("Étudiant inscrit : {} - matricule {}", etudiant.getNom(), etudiant.getMatricule());
 
         return etudiantRepository.save(etudiant);
     }
 
-    /**
-     * Supprimer un étudiant
-     */
-    public void deleteEtudiant(Long id) {
-        log.info("Deleting student with id: {}", id);
-        Etudiant etudiant = getEtudiantById(id);
-        etudiantRepository.delete(etudiant);
-    }
     /**
      * Vérifier si l'étudiant a tous les documents requis
      */
@@ -145,6 +96,9 @@ public class EtudiantService {
     }
 
     /**
+     * pour le mement ne sont pas itule
+     */
+    /**
      * Récupérer les étudiants par pays
      */
     public List<Etudiant> getEtudiantsByPays(Long paysId) {
@@ -153,18 +107,57 @@ public class EtudiantService {
                 .orElseThrow(() -> new ResourceNotFoundException("Pays non trouvé"));
         return etudiantRepository.findByPays(pays);
     }
-    public EtudiantDTO getStudentDashboard(String userId) {
-        // 1. Récupérer l'étudiant depuis la DB locale
-        Etudiant etudiant = etudiantRepository.findByUserId(userId)
-                .orElseThrow(() -> new NotFoundException("Étudiant non trouvé"));
-
-        // 2. Construire le DTO avec toutes les infos
-        return EtudiantDTO.builder()
-                .id(etudiant.getId())
-                .nom(etudiant.getNom())
-                .prenom(etudiant.getPrenom())
-                .email(etudiant.getEmail())
-                .dateNaissance(etudiant.getDateNaissance())
-                .build();
+    /**
+     * Supprimer un étudiant
+     */
+    public void deleteEtudiant(Long id) {
+        log.info("Deleting student with id: {}", id);
+        Etudiant etudiant = getEtudiantById(id);
+        etudiantRepository.delete(etudiant);
     }
+    /**
+     * Récupérer un étudiant par ID
+     */
+    public Etudiant getEtudiantById(Long id) {
+        log.info("Fetching student with id: {}", id);
+        return etudiantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé avec l'ID: " + id));
+    }
+
+    /**
+     * Récupérer un étudiant par matricule
+     */
+    public Etudiant getEtudiantByMatricule(String matricule) {
+        log.info("Fetching student with matricule: {}", matricule);
+        return etudiantRepository.findByMatricule(matricule)
+                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé avec le matricule: " + matricule));
+    }
+
+    /**
+     * Récupérer un étudiant par email
+     */
+    public Etudiant getEtudiantByEmail(String email) {
+        log.info("Fetching student with email: {}", email);
+        return etudiantRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé avec l'email: " + email));
+    }
+    public Etudiant getEtudiantByNumCarteIdentite(String numCarteIdentite) {
+        log.info("Fetching student with email: {}", numCarteIdentite);
+        return etudiantRepository.findByNumCarteIdentite(numCarteIdentite)
+                .orElseThrow(() -> new ResourceNotFoundException("Étudiant non trouvé avec l'email: " + numCarteIdentite));
+    }
+    public Etudiant getEtudiantByNumPassportAndPays(String numPassport, Long paysId) {
+        // Récupérer l'entité Pays depuis l'ID
+        Pays pays = paysRepository.findById(paysId)
+                .orElseThrow(() -> new ResourceNotFoundException("Pays non trouvé avec l'id : " + paysId));
+
+        log.info("Fetching student with passport number: {} for country: {}", numPassport, pays.getNom());
+
+        return etudiantRepository.findByNumPassportAndPays(numPassport, pays)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Étudiant non trouvé avec le numéro de passeport: " + numPassport + " pour le pays: " + pays.getNom()
+                ));
+    }
+
+
 }

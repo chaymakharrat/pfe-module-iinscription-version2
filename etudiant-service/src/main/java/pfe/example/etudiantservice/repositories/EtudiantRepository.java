@@ -1,6 +1,7 @@
 package pfe.example.etudiantservice.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import pfe.example.etudiantservice.dto.PaysDTO;
 import pfe.example.etudiantservice.entities.Etudiant;
 import pfe.example.etudiantservice.entities.Pays;
 
@@ -18,8 +19,12 @@ public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
     List<Etudiant> findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(String nom, String prenom);
 
     List<Etudiant> findByPays(Pays pays);
-    // 🎯 MÉTHODE PRINCIPALE : Rechercher par userId
-    Optional<Etudiant> findByUserId(String userId);
+    Optional<Etudiant> findByNumCarteIdentite(String numCarteIdentite);
+    Optional<Etudiant> findByNumPassportAndPays(String numPassport, Pays pays);
+
+
+
+
 
 
 }

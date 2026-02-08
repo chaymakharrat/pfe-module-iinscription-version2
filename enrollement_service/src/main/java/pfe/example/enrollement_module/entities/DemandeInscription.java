@@ -7,6 +7,8 @@ import pfe.example.enrollement_module.model.Etudiant;
 import pfe.example.enrollement_module.enumerateur.*;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,9 +23,9 @@ public class DemandeInscription {  // Correction orthographe
     private LocalDateTime dateCreation=LocalDateTime.now();
     @Column
     private String ReasonDeRejet;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StatutDemandeInscription statut;
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private StatutDemandeInscription statut;
     /// ////partie feign
     @Column(nullable = false)
     private Long etudiantId;  // ID de référence
@@ -32,23 +34,29 @@ public class DemandeInscription {  // Correction orthographe
     private Etudiant etudiant;  // Peuplé via Feign
 
     @Column(nullable = false)
-    private String NomDiplome;
+    private String nomDiplome;
 
     @Transient
     private DiplomeAEtudier diplomeAEtudier;
+    private String processInstanceId;
     ////////
-    @Column
-    private LocalDateTime dateValidationScolarite;
-    @Column
-    private LocalDateTime dateValidationDepartement;// Quand devient étudiant
-    @Column
-    private LocalDateTime dateValidationFinance;
-    /// //donc lier au service authnetification validator
-    @Column
-    private String validatedByScolarite;  // userId
-    @Column
-    private String validatedByDepartement;  // userId
-    @Column private String validatedByFinance;
+    @OneToMany(mappedBy = "demandeInscription")
+    private Set<HistoriqueStatus> historiqueStatus=new HashSet<>();
+
+    /// ///
+    /// ///
+//    @Column
+//    private LocalDateTime dateValidationScolarite;
+//    @Column
+//    private LocalDateTime dateValidationDepartement;// Quand devient étudiant
+//    @Column
+//    private LocalDateTime dateValidationFinance;
+//    /// //donc lier au service authnetification validator
+//    @Column
+//    private String validatedByScolarite;  // userId
+//    @Column
+//    private String validatedByDepartement;  // userId
+//    @Column private String validatedByFinance;
 
 
-}
+}//ba3d normalement fel status mech nzid attribut agent_faculte

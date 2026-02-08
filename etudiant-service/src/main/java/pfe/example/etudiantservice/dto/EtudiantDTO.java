@@ -28,7 +28,8 @@ public class EtudiantDTO {
     private int anneeDernierDiplome;
     private LocalDate dateNaissance;
     private String paysNom;
+    private String numCarteIdentite;
+    private String numPassport;
     private LocalDateTime dateInscription;
     private boolean hasAllRequiredDocuments;
-    private String userId;
 }

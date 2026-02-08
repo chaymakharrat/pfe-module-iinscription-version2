@@ -19,7 +19,7 @@ public class Pays {
     private Long id;
     @Column(nullable=false,unique = true)
     private String nom;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String indicatif;
     @OneToMany(mappedBy="pays")
     private List<Etudiant> candidats;

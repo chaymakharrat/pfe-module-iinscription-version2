@@ -15,4 +15,5 @@ public interface DiplomeEtudierRepository extends JpaRepository<DiplomeEtudier,L
     List<DiplomeEtudier> findByActifTrue();
 
     List<DiplomeEtudier> findByDepartement(Departement departement);
+
 }

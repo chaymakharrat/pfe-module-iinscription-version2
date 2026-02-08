@@ -11,11 +11,11 @@ services:
       MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: scolarite_service
     ports:
-      - "3307:3306"  # Éviter le conflit avec MySQL local sur 3306
+      - "3307:3306" # Éviter le conflit avec MySQL local sur 3306
     volumes:
       - mysql-scolarite-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,7 +34,7 @@ services:
     expose:
       - "8761"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
       interval: 10s
       retries: 5
       timeout: 5s
@@ -55,7 +55,7 @@ services:
     environment:
       - DISCOVERY_SERVICE_URL=http://my-inscription-discovery-service:8761/eureka
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9999/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9999/actuator/health" ]
       interval: 10s
       retries: 5
       timeout: 5s
@@ -113,14 +113,14 @@ services:
       # Eureka et Config
       - DISCOVERY_SERVICE_URL=http://enset-inscription-discovery-service:8761/eureka
       - CONFIG_SERVICE_URL=http://enset-inscription-config-service:9999
-      
+
       # Base de données MySQL
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-scolarite:3306/scolarite_service?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root123
 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8090/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8090/actuator/health" ]
       interval: 10s
       retries: 5
       timeout: 5s

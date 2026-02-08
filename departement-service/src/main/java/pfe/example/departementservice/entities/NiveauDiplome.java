@@ -3,8 +3,8 @@ package pfe.example.departementservice.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
+import lombok.ToString;
 
-import java.util.Set;
 @Entity
 @Data
 public class NiveauDiplome {

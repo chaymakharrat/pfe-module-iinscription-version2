@@ -1,117 +1,139 @@
 package pfe.example.etudiantservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pfe.example.etudiantservice.entities.Document;
 import pfe.example.etudiantservice.enumerateur.TypeDocument;
 import pfe.example.etudiantservice.service.DocumentService;
-
-
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/documents")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
+//@CrossOrigin(origins = "*")
+@Slf4j
 public class DocumentController {
 
     private final DocumentService documentService;
-    private final Path documentsPath = Paths.get("src/main/resources/static/documents");
 
-    // Upload un document
+    /**
+     * Upload un document
+     */
     @PostMapping("/upload")
     public ResponseEntity<?> uploadDocument(
-            @RequestParam("candidatId") Long candidatId,
+            @RequestParam("etudiantId") Long etudiantId,
             @RequestParam("type") TypeDocument type,
             @RequestParam("file") MultipartFile file
     ) {
+        log.info("📤 Upload request - Candidat: {}, Type: {}, File: {}",
+                etudiantId, type, file.getOriginalFilename());
+
         try {
-            Document document = documentService.uploadDocument(candidatId, type, file);
-            return ResponseEntity.ok(document);
+            Document document = documentService.uploadDocument(etudiantId, type, file);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Document uploadé avec succès");
+            response.put("document", document);
+
+            return ResponseEntity.ok(response);
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            log.error("❌ Validation error: {}", e.getMessage());
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
+
         } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body("Erreur lors du téléchargement: " + e.getMessage());
+            log.error("❌ Upload error: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Erreur lors du téléchargement: " + e.getMessage()));
         }
     }
 
-    // Récupérer tous les documents d'un candidat
-    @GetMapping("/candidat/{candidatId}")
-    public ResponseEntity<List<Document>> getDocumentsByCandidat(
-            @PathVariable Long candidatId
+    /**
+     * Récupérer tous les documents d'un étudiant
+     */
+    @GetMapping("/etudiant/{etudiantId}")
+    public ResponseEntity<List<Document>> getDocumentsByEtudiant(
+            @PathVariable Long etudiantId
     ) {
-        List<Document> documents = documentService.getDocumentsByCandidat(candidatId);
+        log.info("📋 Fetching documents for etudiant {}", etudiantId);
+        List<Document> documents = documentService.getDocumentsByEtudiant(etudiantId);
         return ResponseEntity.ok(documents);
     }
 
-    // Servir/télécharger un document (comme votre ImageController)
-    @GetMapping("/{filename:.+}")
-    public ResponseEntity<Resource> serveDocument(@PathVariable String filename) {
+    /**
+     * Télécharger un document
+     */
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> downloadDocument(@PathVariable Long id) {
         try {
-            Path file = documentsPath.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
+            Document document = documentService.getDocumentById(id);
+            Path filePath = documentService.getFilePath(document.getCheminFichier());
+            Resource resource = new UrlResource(filePath.toUri());
 
-            if (resource.exists() && resource.isReadable()) {
-                // Déterminer le type de contenu
-                String contentType = Files.probeContentType(file);
-                if (contentType == null) {
-                    contentType = "application/octet-stream";
-                }
-
-                return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType(contentType))
-                        .header(HttpHeaders.CONTENT_DISPOSITION,
-                                "inline; filename=\"" + resource.getFilename() + "\"")
-                        .body(resource);
-            } else {
+            if (!resource.exists() || !resource.isReadable()) {
+                log.error("❌ File not found or not readable: {}", filePath);
                 return ResponseEntity.notFound().build();
             }
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(document.getContentType()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=\"" + document.getNomFichier() + "\"")
+                    .body(resource);
+
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            log.error("❌ Download error: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // Télécharger un document (force download)
-    @GetMapping("/download/{documentId}")
-    public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) {
+    /**
+     * Supprimer un document
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteDocument(@PathVariable Long id) {
         try {
-            Document document = documentService.getDocumentById(documentId);
-            Path file = documentsPath.resolve(document.getCheminFichier());
-            Resource resource = new UrlResource(file.toUri());
-
-            if (resource.exists() && resource.isReadable()) {
-                return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType(document.getContentType()))
-                        .header(HttpHeaders.CONTENT_DISPOSITION,
-                                "attachment; filename=\"" + document.getNomFichier() + "\"")
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
+            documentService.deleteDocument(id);
+            return ResponseEntity.ok(Map.of("message", "Document supprimé avec succès"));
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            log.error("❌ Delete error: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 
-    // Supprimer un document
-    @DeleteMapping("/{documentId}")
-    public ResponseEntity<?> deleteDocument(@PathVariable Long documentId) {
+    /**
+     * Valider/Rejeter un document
+     */
+    @PutMapping("/{id}/validate")
+    public ResponseEntity<?> validateDocument(
+            @PathVariable Long id,
+            @RequestParam boolean isValid,
+            @RequestParam(required = false) String commentaire
+    ) {
         try {
-            documentService.deleteDocument(documentId);
-            return ResponseEntity.ok("Document supprimé avec succès");
+            Document document = documentService.validateDocument(id, isValid, commentaire);
+            return ResponseEntity.ok(Map.of(
+                    "message", isValid ? "Document validé" : "Document rejeté",
+                    "document", document
+            ));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body("Erreur lors de la suppression: " + e.getMessage());
+            log.error("❌ Validation error: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 }

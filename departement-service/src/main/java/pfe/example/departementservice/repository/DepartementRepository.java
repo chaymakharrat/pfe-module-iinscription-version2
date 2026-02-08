@@ -9,6 +9,4 @@ public interface DepartementRepository extends JpaRepository<Departement,Long> {
     Optional<Departement> findByNom(String nom);
 
     boolean existsByNom(String nom);
-
-    boolean existsByEmail(String email);
 }

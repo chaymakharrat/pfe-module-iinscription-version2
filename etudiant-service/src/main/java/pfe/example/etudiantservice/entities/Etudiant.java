@@ -7,6 +7,8 @@ import pfe.example.etudiantservice.enumerateur.Diplome;
 import pfe.example.etudiantservice.enumerateur.Genre;
 import pfe.example.etudiantservice.enumerateur.StatutEtudiant;
 import pfe.example.etudiantservice.enumerateur.TypeDocument;
+import pfe.example.etudiantservice.validation.AgeMinimum;
+import pfe.example.etudiantservice.validation.CinOrPassport;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,12 +20,12 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "etudiants")
 @Data
+@CinOrPassport
 public class Etudiant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
     private String matricule;  // Ex: ITECH-2024-001
     @Column(nullable = false)
     @NotBlank(message = "Le nom est obligatoire")
@@ -41,21 +43,24 @@ public class Etudiant {
     @Column(nullable = false)
     @NotNull(message = "Le genre est obligatoire")
     private Genre genre;
-    // 🔗 LIEN AVEC AUTH-SERVICE (IMPORTANT)
-    @Column(name = "user_id", unique = true, nullable = false)
-    private String userId;  // ID de l'utilisateur dans Auth-Service
-
     @Enumerated(EnumType.STRING)
     private Diplome dernierDiplome; // LICENCE, BACCALAUREA, MASTERE, INGENIEUR
-
     private int anneeDernierDiplome;  // Ex: 2023
-
     @Column(nullable = false)
+    @AgeMinimum(value = 18, message = "L'étudiant doit avoir au moins 18 ans")
     private LocalDate dateNaissance;
+    @Transient
+    private int age;
+    @Pattern(
+            regexp = "^[0-9]{8}$",
+            message = "Le numéro de carte d'identité doit contenir exactement 8 chiffres"
+    )
+    private String numCarteIdentite;
+    private String numPassport;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Pays pays;
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private LocalDateTime dateInscription;
     @OneToMany(
             mappedBy = "etudiant",
@@ -89,7 +94,7 @@ public class Etudiant {
                 TypeDocument.CARTE_IDENTITE,
                 TypeDocument.DIPLOME_BAC,
                 TypeDocument.RELEVE_NOTES,
-                TypeDocument.PHOTO_IDENTITE,
+                //TypeDocument.PHOTO_IDENTITE,
                 TypeDocument.CERTIFICAT_NAISSANCE
         );
 

@@ -6,7 +6,6 @@ public enum TypeDocument {
     DIPLOME_LICENCE("Diplôme de Licence"),
     DIPLOME_MASTER("Diplôme de Master"),
     RELEVE_NOTES("Relevé de notes"),
-    PHOTO_IDENTITE("Photo d'identité"),
     CERTIFICAT_NAISSANCE("Certificat de naissance"),
     AUTRE("Autre document");
 
