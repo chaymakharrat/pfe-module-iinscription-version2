@@ -5,11 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pfe.example.etudiantservice.enumerateur.Diplome;
-import pfe.example.etudiantservice.enumerateur.Genre;
+import pfe.example.etudiantservice.enumerateur.Gendre;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
@@ -23,7 +22,7 @@ public class EtudiantDTO {
     private String prenom;
     private String email;
     private String phone;
-    private Genre genre;
+    private Gendre gendre;
     private Diplome dernierDiplome;
     private int anneeDernierDiplome;
     private LocalDate dateNaissance;

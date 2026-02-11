@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import pfe.example.enrollement_module.dto.*;
 
 
-@FeignClient(name = "service-workflow")
+@FeignClient(
+        name = "service-workflow",
+        url = "${workflow.service.url}"
+)
 public interface CamundaWorkflowClient {
 
     @PostMapping("/api/process/enrollment/start")

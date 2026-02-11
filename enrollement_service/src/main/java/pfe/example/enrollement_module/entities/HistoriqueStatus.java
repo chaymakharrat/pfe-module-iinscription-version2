@@ -16,6 +16,7 @@ public class HistoriqueStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatutDemandeInscription statut;
     @Column(nullable = false)
     private LocalDateTime dateStatus=LocalDateTime.now();

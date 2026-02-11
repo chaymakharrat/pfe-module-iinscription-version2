@@ -79,10 +79,10 @@
         </dependency>
 
         <!-- Eureka client -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+<!--        </dependency>-->
 
         <!-- OpenFeign -->
         <dependency>
@@ -97,17 +97,17 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Missing Jersey 3 transport for Eureka and Spring Boot 3 compatibility -->
-        <dependency>
-            <groupId>com.netflix.eureka</groupId>
-            <artifactId>eureka-client-jersey3</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; Missing Jersey 3 transport for Eureka and Spring Boot 3 compatibility &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.netflix.eureka</groupId>-->
+<!--            <artifactId>eureka-client-jersey3</artifactId>-->
+<!--        </dependency>-->
 
-        <!-- Spring Boot Actuator -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; Spring Boot Actuator &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--        </dependency>-->
 
     </dependencies>
 

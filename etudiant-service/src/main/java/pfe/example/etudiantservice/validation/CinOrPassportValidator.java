@@ -12,7 +12,7 @@ public class CinOrPassportValidator implements ConstraintValidator<CinOrPassport
         boolean hasCin = e.getNumCarteIdentite() != null && !e.getNumCarteIdentite().isBlank();
         boolean hasPassport = e.getNumPassport() != null && !e.getNumPassport().isBlank();
 
-        return hasCin ^ hasPassport; // XOR : un seul
+        return hasCin || hasPassport; // ✅ AU MOINS UN DES DEUX
     }
 }
 

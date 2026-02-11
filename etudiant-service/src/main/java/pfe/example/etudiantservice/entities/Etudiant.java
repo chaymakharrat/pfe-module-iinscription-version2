@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import pfe.example.etudiantservice.enumerateur.Diplome;
-import pfe.example.etudiantservice.enumerateur.Genre;
+import pfe.example.etudiantservice.enumerateur.Gendre;
 import pfe.example.etudiantservice.enumerateur.StatutEtudiant;
 import pfe.example.etudiantservice.enumerateur.TypeDocument;
 import pfe.example.etudiantservice.validation.AgeMinimum;
+import pfe.example.etudiantservice.validation.AnneeDiplomeValide;
 import pfe.example.etudiantservice.validation.CinOrPassport;
 
 import java.time.LocalDate;
@@ -18,9 +19,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "etudiants")
+@Table(name = "detail_etudiants")
 @Data
 @CinOrPassport
+@AnneeDiplomeValide
 public class Etudiant {
 
     @Id
@@ -41,8 +43,8 @@ public class Etudiant {
     private String phone;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotNull(message = "Le genre est obligatoire")
-    private Genre genre;
+    @NotNull(message = "Le gendre est obligatoire")
+    private Gendre gendre;
     @Enumerated(EnumType.STRING)
     private Diplome dernierDiplome; // LICENCE, BACCALAUREA, MASTERE, INGENIEUR
     private int anneeDernierDiplome;  // Ex: 2023
@@ -72,8 +74,6 @@ public class Etudiant {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatutEtudiant statut=StatutEtudiant.CANDIDAT;
-
-
 
 
 

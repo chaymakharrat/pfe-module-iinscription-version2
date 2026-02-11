@@ -8,6 +8,8 @@ import pfe.example.enrollement_module.dto.StatusUpdateRequest;
 import pfe.example.enrollement_module.entities.DemandeInscription;
 import pfe.example.enrollement_module.services.DemandeInscriptionService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/demandes")
 @RequiredArgsConstructor
@@ -42,6 +44,12 @@ public class DemandeInscriptionController {
         demandeInscriptionService.updateStatus(id, request);
         return ResponseEntity.ok().build();
     }
+    // 🆕 Endpoint pour récupérer toutes les demandes
+    @GetMapping
+    public ResponseEntity<List<DemandeInscription>> getAllDemandes() {
+        return ResponseEntity.ok(demandeInscriptionService.getAllDemandes());
+    }
+
 
 
 }

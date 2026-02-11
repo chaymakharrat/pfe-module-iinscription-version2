@@ -11,6 +11,8 @@ import pfe.example.enrollement_module.repository.DemandeInscriptionRepository;
 import pfe.example.enrollement_module.repository.HistoriqueStatusRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +28,6 @@ public class DemandeInscriptionService {
         // Obligatoire
         demande.setNomDiplome(request.getNomDiplome());
         demande.setEtudiantId(request.getEtudiantId());
-
-        // Statut initial
-        //demande.setStatut(StatutDemandeInscription.SOUMIS);
-
         // dateCreation déjà gérée par défaut dans l'entité
         System.out.println("NomDiplome = " + request.getNomDiplome());
         System.out.println("EtudiantId = " + request.getEtudiantId());
@@ -63,8 +61,6 @@ public class DemandeInscriptionService {
 
         } catch (Exception e) {
             System.err.println("❌ Erreur lors du démarrage du processus Camunda : " + e.getMessage());
-            // Vous pouvez gérer l'exception comme vous voulez
-            // Pour l'instant, on continue même si Camunda n'est pas disponible
         }
 
         return savedDemande;
@@ -97,5 +93,13 @@ public class DemandeInscriptionService {
         historique.setDateStatus(LocalDateTime.now());
         historiqueRepository.save(historique);
     }
+    // 🆕 Récupérer toutes les demandes
+    public List<DemandeInscription> getAllDemandes() {
+        List<DemandeInscription> list = new ArrayList<>();
+        demandeInscriptionRepository.findAll().forEach(list::add);
+        return list;
+    }
+
+
 
 }

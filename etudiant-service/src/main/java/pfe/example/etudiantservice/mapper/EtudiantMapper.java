@@ -20,7 +20,7 @@ public class EtudiantMapper {
                 .prenom(etudiant.getPrenom())
                 .email(etudiant.getEmail())
                 .phone(etudiant.getPhone())
-                .genre(etudiant.getGenre())
+                .gendre(etudiant.getGendre())
                 .dernierDiplome(etudiant.getDernierDiplome())
                 .anneeDernierDiplome(etudiant.getAnneeDernierDiplome())
                 .dateNaissance(etudiant.getDateNaissance())
@@ -42,7 +42,7 @@ public class EtudiantMapper {
         etudiant.setPrenom(dto.getPrenom());
         etudiant.setEmail(dto.getEmail());
         etudiant.setPhone(dto.getPhone());
-        etudiant.setGenre(dto.getGenre());
+        etudiant.setGendre(dto.getGendre());
         etudiant.setDernierDiplome(dto.getDernierDiplome());
         etudiant.setAnneeDernierDiplome(dto.getAnneeDernierDiplome());
         etudiant.setDateNaissance(dto.getDateNaissance());

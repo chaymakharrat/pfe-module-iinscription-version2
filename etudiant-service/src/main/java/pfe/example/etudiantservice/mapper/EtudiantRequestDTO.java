@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pfe.example.etudiantservice.enumerateur.Diplome;
-import pfe.example.etudiantservice.enumerateur.Genre;
+import pfe.example.etudiantservice.enumerateur.Gendre;
 
 import java.time.LocalDate;
 
@@ -31,7 +31,7 @@ public class EtudiantRequestDTO {
     private String phone;
 
     @NotNull(message = "Le genre est obligatoire")
-    private Genre genre;
+    private Gendre gendre;
 
     private Diplome dernierDiplome;
 
