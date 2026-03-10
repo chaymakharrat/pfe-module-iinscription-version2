@@ -1,4 +1,4 @@
 package pfe.example.departementservice.web;
 
-public class departmentDashboardController {
+public class PrerequisConfigController {
 }
