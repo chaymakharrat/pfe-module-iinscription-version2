@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:modeler="http://camunda.org/schema/modeler/1.0"
+                  id="Definitions_1uwzgl0"
+                  targetNamespace="http://bpmn.io/schema/bpmn"
+                  exporter="Camunda Modeler"
+                  exporterVersion="5.43.1"
+                  modeler:executionPlatform="Camunda Platform"
+                  modeler:executionPlatformVersion="7.24.0">
+
+  <bpmn:signal id="Signal_RejetMasse" name="REJET_MASSE" />
+
+  <bpmn:process id="rejet-masse-liste"
+                isExecutable="true"
+                camunda:historyTimeToLive="30">
+
+    <bpmn:startEvent id="Event_0x36khl" name="rejet masse">
+      <bpmn:outgoing>Flow_0njdife</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_1vmfjit"
+                                   signalRef="Signal_RejetMasse" />
+    </bpmn:startEvent>
+
+    <!-- ✅ Service Task directement — plus de User Task -->
+    <bpmn:serviceTask id="Activity_RejetMasse"
+                      name="rejeter demandes en masse"
+                      camunda:delegateExpression="${confirmerRejetMasseDelegate}">
+      <bpmn:incoming>Flow_0njdife</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dar5q5</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:serviceTask id="Activity_01rfy8y"
+                      name="notifier candidat rejet"
+                      camunda:delegateExpression="${notifierRejetMasseDelegate}">
+      <bpmn:incoming>Flow_0dar5q5</bpmn:incoming>
+      <bpmn:outgoing>Flow_0cg4e0j</bpmn:outgoing>
+    </bpmn:serviceTask>
+
+    <bpmn:endEvent id="Event_17zr5hq">
+      <bpmn:incoming>Flow_0cg4e0j</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <bpmn:sequenceFlow id="Flow_0njdife"
+                       sourceRef="Event_0x36khl"
+                       targetRef="Activity_RejetMasse" />
+    <bpmn:sequenceFlow id="Flow_0dar5q5"
+                       sourceRef="Activity_RejetMasse"
+                       targetRef="Activity_01rfy8y" />
+    <bpmn:sequenceFlow id="Flow_0cg4e0j"
+                       sourceRef="Activity_01rfy8y"
+                       targetRef="Event_17zr5hq" />
+
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="rejet-masse-liste">
+      <bpmndi:BPMNShape id="Event_0x36khl_di" bpmnElement="Event_0x36khl">
+        <dc:Bounds x="172" y="92" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="161" y="135" width="58" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_RejetMasse_di" bpmnElement="Activity_RejetMasse">
+        <dc:Bounds x="280" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m7ah7f_di" bpmnElement="Activity_01rfy8y">
+        <dc:Bounds x="450" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17zr5hq_di" bpmnElement="Event_17zr5hq">
+        <dc:Bounds x="622" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0njdife_di" bpmnElement="Flow_0njdife">
+        <di:waypoint x="208" y="110" />
+        <di:waypoint x="280" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dar5q5_di" bpmnElement="Flow_0dar5q5">
+        <di:waypoint x="380" y="110" />
+        <di:waypoint x="450" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cg4e0j_di" bpmnElement="Flow_0cg4e0j">
+        <di:waypoint x="550" y="110" />
+        <di:waypoint x="622" y="110" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</bpmn:definitions>
