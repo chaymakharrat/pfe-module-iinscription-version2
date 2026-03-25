@@ -251,16 +251,16 @@
     <bpmn:sequenceFlow id="Flow_11q4ako" sourceRef="Task_NotificationRejet" targetRef="EndEvent_Reject" />
     <bpmn:sequenceFlow id="Flow_16zxf88" sourceRef="Task_ValidationDepartement" targetRef="Gateway_01ncpg8" />
     <bpmn:sequenceFlow id="Flow_020ar2p" name="non" sourceRef="Gateway_01ncpg8" targetRef="Activity_0i24ty3">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'REJETE'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'non'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0joaoet" name="LISTE_ATTENTE" sourceRef="Gateway_01ncpg8" targetRef="Activity_1nq5g8u">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision == 'LISTE_ATTENTE'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${decision != 'non'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0obkobu" sourceRef="Activity_0i24ty3" targetRef="EndEvent_Reject" />
     <bpmn:sequenceFlow id="Flow_0s5x877" sourceRef="Activity_1nq5g8u" targetRef="Event_1f4xhwp" />
     <bpmn:sequenceFlow id="Flow_0jdyhwy" sourceRef="Event_1f4xhwp" targetRef="Gateway_1fnd0pq" />
     <bpmn:sequenceFlow id="Flow_1efdh0w" sourceRef="Gateway_1fnd0pq" targetRef="Activity_0vevjaq">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${statut == 'LISTE_ATTENTE'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${groupeComplet == false}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0r4919l" sourceRef="Gateway_1fnd0pq" targetRef="EndEvent_Reject">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${statut == 'REJETE_DEPARTEMENT'}</bpmn:conditionExpression>
